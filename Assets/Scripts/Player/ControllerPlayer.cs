@@ -6,42 +6,41 @@ using UnityEngine.InputSystem;
 public class ControllerPlayer : MonoBehaviour
 {
 
+   // === MOVIMENTAÇÃO ===
    [Header("Movimentation")]
     public float speedMoviment = 10f;     // volocidade do movimento do player
     public float forceJump= 10; //Forca do pulo do Player
     public float PlayerDamping = 5f;
     public Rigidbody rb; // RigidyBody Player
+
     [HideInInspector]public float moveH; 
     [HideInInspector]public float moveV;
 
-    
+    // === ROTAÇÃO ===
     [Header("Rotation")]
-    public GameObject head; // cabeça do player
-    public float    sensitivityX =  100f; // sensibilidade da rotação
-    public float    sensitivityY =  100f; // sensibilidade da rotação
-    public float    minRotationX =  -45f; // angulo minimo ao olhar para baixo
-    public float    maxRotationX =  45f; // angulo maximo para olhara para cima
+    [SerializeField]private GameObject head; // cabeça do player
+    [SerializeField]private float    sensitivityX =  100f; // sensibilidade da rotação
+    [SerializeField]private float    sensitivityY =  100f; // sensibilidade da rotação
+    [SerializeField]private float    minRotationX =  -45f; // angulo minimo ao olhar para baixo
+    [SerializeField]private float    maxRotationX =  45f; // angulo maximo para olhara para cima
     private float   currentRotationX = 0f; // rotação atual;
-
-    [HideInInspector]public Animator        animatorPlayer;
+    
+    // === State Machine ===
     [HideInInspector]public StateMachine    stateMachine;
     [HideInInspector]public IdleState       idleState;
     [HideInInspector]public WalkingState    walkingState;
     [HideInInspector]public JumpState       jumpState;
 
-    [Header("Grounded")]
-    public bool isground;
+    // === Ground ===
+    [Header("Ground")]
+    public bool isground; 
     public LayerMask LayerMaskGrounded;
-    public Transform GroundedTransform;
     
      
     void Start()
     {
         // Pegar RigidyBody do objeto em que o script esta
         rb = GetComponent<Rigidbody>();
-
-        // pEgar animator do PLayer
-        animatorPlayer = GetComponentInChildren<Animator>();
 
         // StateMachine
         stateMachine = new StateMachine();
@@ -52,12 +51,6 @@ public class ControllerPlayer : MonoBehaviour
 
         // Define estado incial
         stateMachine.ChangeState(idleState);
-
-        // Define o amortecimento linear do rigidbody (rb):
-        rb.linearDamping = isground? PlayerDamping : 0f;
-
-        // Congela Rotação do Rigidbody(rb)
-        rb.freezeRotation = true;
 
     }
 
@@ -75,24 +68,30 @@ public class ControllerPlayer : MonoBehaviour
         // Imputs
          moveH = Input.GetAxis("Horizontal");
          moveV = Input.GetAxis("Vertical");
-
+         
+        // Congela Rotação do Rigidbody(rb)
+        rb.freezeRotation = true;
+        
+        // Define o amortecimento linear do rigidbody (rb):
+        rb.linearDamping = isground? PlayerDamping : 0f;
     }
 
     void Rotation(){
-    Cursor.visible = false;
-    Screen.lockCursor = true;
-    float mouseX = Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
-    float mouseY = Input.GetAxis("Mouse Y") * sensitivityY * Time.deltaTime;
+        // Configurações do cursor
+        Cursor.visible = false; // deixar invisivel
+        Screen.lockCursor = true; // travar cursos na tela
+        
+        // Pegar posição do mouse na tela.
+        float mouseX = Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * sensitivityY * Time.deltaTime;
 
-    // Manter a rotação do eixo Y da cabeça  entre o angulo minimo e o maximo;
-    currentRotationX -= mouseY;
-    currentRotationX = Mathf.Clamp(currentRotationX, minRotationX, maxRotationX);
-    // Manter a rotação do eixo Y da cabeça  entre o angulo minimo e o maximo;s
+        // Manter a rotação do eixo Y da cabeça  entre o angulo minimo e o maximo;
+        currentRotationX -= mouseY;
+        currentRotationX = Mathf.Clamp(currentRotationX, minRotationX, maxRotationX);
 
-    // Rotaciona localmente a cabeça do player apenas no eixo Y (horizontal)
-    head.transform.localRotation = Quaternion.Euler(currentRotationX,0f,0f);
-    transform.Rotate(0, mouseX, 0);
-
+        // Rotaciona localmente a cabeça do player apenas no eixo Y (horizontal)
+        head.transform.localRotation = Quaternion.Euler(currentRotationX,0f,0f);
+        transform.Rotate(0, mouseX, 0);
     }
 
     /* ---------------------------------------------------------JUMP--------------------------------------------------
@@ -100,6 +99,7 @@ public class ControllerPlayer : MonoBehaviour
     ------------------------------------------------------------------------------------------------------------------*/
     void  Jump(){
 
+        // Tocando no chão
         isground = Physics.CheckSphere(transform.position, 1.2f, LayerMaskGrounded);
 
         // Get Entrada Teclado Jump
