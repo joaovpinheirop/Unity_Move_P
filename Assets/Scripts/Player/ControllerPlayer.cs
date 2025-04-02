@@ -10,7 +10,8 @@ public class ControllerPlayer : MonoBehaviour
    [Header("Movimentation")]
     public float speedMoviment = 10f;     // volocidade do movimento do player
     public float forceJump= 10; //Forca do pulo do Player
-    public float PlayerDamping = 5f;
+    public float PlayerDampingMax = 5f;
+    public float PlayerDampingMin = 1.2f;
     public Rigidbody rb; // RigidyBody Player
 
     [HideInInspector]public float moveH; 
@@ -28,8 +29,9 @@ public class ControllerPlayer : MonoBehaviour
     // === State Machine ===
     [HideInInspector]public StateMachine    stateMachine;
     [HideInInspector]public IdleState       idleState;
-    [HideInInspector]public WalkingState    walkingState;
     [HideInInspector]public JumpState       jumpState;
+    [HideInInspector]public WalkingState       walkingState;
+    [HideInInspector]public RunState       runState;
 
     // === Ground ===
     [Header("Ground")]
@@ -46,8 +48,9 @@ public class ControllerPlayer : MonoBehaviour
         stateMachine = new StateMachine();
         // Estados
         idleState = new IdleState(this);
-        walkingState = new WalkingState(this);
         jumpState = new JumpState(this);
+        walkingState = new WalkingState(this);
+        runState = new RunState(this);
 
         // Define estado incial
         stateMachine.ChangeState(idleState);
@@ -68,12 +71,20 @@ public class ControllerPlayer : MonoBehaviour
         // Imputs
          moveH = Input.GetAxis("Horizontal");
          moveV = Input.GetAxis("Vertical");
+
+        if(moveV != 0 || moveH != 0){
+            if(Input.GetKey(KeyCode.LeftShift)){
+            stateMachine.ChangeState(runState);
+            }else{
+            stateMachine.ChangeState(walkingState);
+            }
+        }
          
         // Congela Rotação do Rigidbody(rb)
         rb.freezeRotation = true;
         
         // Define o amortecimento linear do rigidbody (rb):
-        rb.linearDamping = isground? PlayerDamping : 0f;
+        rb.linearDamping = isground? PlayerDampingMax : PlayerDampingMin;
     }
 
     void Rotation(){

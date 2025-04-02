@@ -4,7 +4,7 @@ Este projeto demonstra uma mecânica básica de movimentação em primeira pesso
 ## Funcionalidades
 - Movimentação com as teclas **W, A, S, D**  
 - Controle da câmera pelo mouse (Usando Cinemachine)
-- Possibilidade  pular  
+- Possibilidade  pular  e Correr
 - Física básica para colisão com o ambiente  
 
 ## Sobre o Projeto
@@ -40,6 +40,7 @@ A movimentação do jogador é gerenciada por uma **Máquina de Estados (State M
 - **Idle** (Parado) – Quando o jogador não está se movendo.  
 - **Walking** (Andando) – Quando há entrada de movimento.  
 - **Jumping** (Pulando) – Quando o jogador executa um salto.
+- **Run** (Correndo) – Quando o jogador esta Correndo
 
 Com essa abordagem, adicionar novas ações, como correr, agachar ou interagir com o ambiente, torna-se simples e intuitivo, garantindo um código mais escalável e de fácil manutenção.
 

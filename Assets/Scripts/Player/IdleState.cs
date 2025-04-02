@@ -27,9 +27,8 @@ public class IdleState : State
     {
         Debug.Log("--TESTE--");
 
-        if(controller.moveV != 0 || controller.moveH != 0){
-            controller.stateMachine.ChangeState(controller.walkingState);
-        }
+      
+        
         base.Update();
     }
 }
