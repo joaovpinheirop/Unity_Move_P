@@ -27,7 +27,9 @@ interação com objetos e um cenário mais detalhado.
  &emsp; ┃ ┣ 📜 `ControllerPlayer.cs` - Gerencia o controle do jogador e interações com a State Machine.  
  &emsp; ┃ ┣ 📜 `IdleState.cs` - Define o comportamento do jogador quando parado.  
  &emsp; ┃ ┣ 📜 `JumpState.cs` - Gerencia a ação de pulo.  
- &emsp; ┃ ┗ 📜 `WalkingState.cs` - Controla a movimentação do jogador.  
+ &emsp; ┃ ┣ 📜 `MoveState.cs` - Gerencia a a movimentação do jogador.  
+ &emsp; ┃ ┗ 📜 `WalkingState.cs` - Controla a movimentação lenta do jogador.  
+ &emsp; ┃ ┗ 📜 `RunState.cs` - Controla a movimentação rapida do jogador.  
  &emsp; ┗ 📂 **StateMachine** *(Sistema de gerenciamento de estados)*  
  &emsp; &emsp; ┣ 📜 `State.cs` - Classe base para todos os estados.  
  &emsp; &emsp; ┗ 📜 `StateMachine.cs` - Gerencia as transições entre os estados.  
