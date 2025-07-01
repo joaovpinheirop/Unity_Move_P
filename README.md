@@ -11,7 +11,7 @@ Este projeto demonstra uma mecânica básica de movimentação em primeira pesso
 Este é um projeto independente criado para estudo e aprimoramento no desenvolvimento de 
 mecânicas básicas de movimentação em jogos. Futuras melhorias podem incluir ajustes na física, 
 interação com objetos e um cenário mais detalhado.
-
+<img src="https://yt3.ggpht.com/XOeqinVZtAJUDJeGzF2pgY5ZbDLbE-utBFL_OxeA4iJ633ZainXU2wSQaCzHQs8DOIrgAMsT47hEiCU=s761-c-fcrop64=1,000000008e33ffff-rw-nd-v1" alt="IMAGEM PROJETO.">
 
 ## Tecnologias Utilizadas
 - **Engine:** Unity  
